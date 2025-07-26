@@ -1,37 +1,38 @@
-// lib/firebase.ts
+// lib/firebase.ts (Corrected)
 
-import { initializeApp, getApps, getApp } from 'firebase/app';
-import { getAnalytics, isSupported } from 'firebase/analytics';
-// import other Firebase services you use, e.g., getFirestore, getAuth
+import { initializeApp } from 'firebase/app';
+import { getAnalytics, isSupported } from 'firebase/analytics'; // Assuming you're importing isSupported from 'firebase/analytics'
 
-// Your Firebase configuration object
+// Your Firebase configuration (from your FIREBASE_WEBAPP_CONFIG environment variable)
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_AUTH_DOMAIN",
-  projectId: "ai-tool-catalogue", // This matches your project ID!
-  storageBucket: "YOUR_STORAGE_BUCKET",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID",
-  measurementId: "YOUR_MEASUREMENT_ID" // If you have one for Analytics
+  apiKey: "AIzaSyA8rXxi_FBLroitIvnRmpSn4cM2SGy12Ng",
+  appId: "1:764613209987:web:554082dde14e29e8ad50b6",
+  authDomain: "ai-tool-catalogue.firebaseapp.com",
+  databaseURL: "", // Or your Realtime Database URL if you use it
+  messagingSenderId: "764613209987",
+  projectId: "ai-tool-catalogue",
+  storageBucket: "ai-tool-catalogue.firebasestorage.app"
 };
 
-// Initialize Firebase App
-let app;
-if (!getApps().length) {
-  app = initializeApp(firebaseConfig);
-} else {
-  app = getApp();
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+
+let analytics;
+
+// Create an async function to initialize Analytics conditionally
+async function initializeFirebaseAnalytics() {
+  if (typeof window !== 'undefined' && (await isSupported())) { // <-- THE CRUCIAL CHANGE HERE
+    analytics = getAnalytics(app);
+    console.log("Firebase Analytics initialized!"); // Optional: for debugging
+  } else {
+    console.log("Firebase Analytics not supported or not in browser environment."); // Optional: for debugging
+  }
 }
 
-// Function to initialize and return Analytics
-// Call this function where you actually need analytics, e.g., in _app.tsx or a useEffect hook
-export const getFirebaseAnalytics = async () => {
-  if (typeof window !== 'undefined' && (await isSupported())) {
-    return getAnalytics(app);
-  }
-  return null; // or undefined, if analytics is not supported/initialized
-};
+// Call the async function somewhere in your app's initialization logic
+// For example, if this is a module, you might export a function that calls this,
+// or call it directly if it's part of a top-level component.
+initializeFirebaseAnalytics();
 
-// Export other Firebase services (add as needed)
-// export const getFirebaseAuth = () => { /* ... */ };
-// export const getFirestoreDb = () => { /* ... */ };
+// You'd also likely export 'app' and 'analytics' for use in other parts of your app
+export { app, analytics };
