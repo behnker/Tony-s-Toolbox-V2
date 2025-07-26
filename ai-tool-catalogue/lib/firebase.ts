@@ -1,4 +1,4 @@
-// lib/firebase.ts (Corrected)
+// lib/firebase.ts
 
 import { initializeApp } from 'firebase/app';
 import { getAnalytics, isSupported } from 'firebase/analytics'; // Assuming you're importing isSupported from 'firebase/analytics'
