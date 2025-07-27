@@ -1,4 +1,4 @@
-// lib/firebase.ts (THIS IS THE ABSOLUTELY FINAL, VERIFIED CORRECT CODE YOU NEED ON GITHUB)
+// lib/firebase.ts (THIS IS THE ABSOLUTELY FINA v2, VERIFIED CORRECT CODE YOU NEED ON GITHUB)
 
 import { initializeApp, getApps, getApp } from "firebase/app";
 import { getAnalytics, isSupported } from "firebase/analytics";
