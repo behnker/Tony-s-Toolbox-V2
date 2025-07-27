@@ -1,4 +1,4 @@
-/// lib/firebase.ts (ABSOLUTELY THE CORRECTED VERSION - PLEASE USE THIS)
+// lib/firebase.ts (THIS IS THE CORRECTED CODE YOU NEED ON GITHUB)
 
 import { initializeApp, getApps, getApp } from "firebase/app";
 import { getAnalytics, isSupported } from "firebase/analytics";
@@ -17,22 +17,25 @@ const firebaseConfig = {
 // Initialize Firebase only if it hasn't been initialized yet
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 
-let analytics;
+let analytics; // Declare analytics here so it can be assigned later
 
-// Define an async function to initialize Analytics conditionally
-// This function needs to be async to use 'await'
+// Define an async function to handle Analytics initialization.
+// This function MUST be async to use 'await'.
 async function initializeFirebaseAnalytics() {
-  // IMPORTANT: AWAIT THE isSupported() PROMISE HERE
-  if (typeof window !== 'undefined' && (await isSupported())) {
+  // Check if window is defined (for browser environment) AND
+  // AWAIT the result of isSupported() to get its actual boolean value.
+  if (typeof window !== 'undefined' && (await isSupported())) { // <--- THE CRITICAL CHANGE IS HERE
     analytics = getAnalytics(app);
-    // console.log("Firebase Analytics initialized!"); // Optional: for debugging
+    console.log("Firebase Analytics initialized successfully!"); // Optional: for debugging
   } else {
-    // console.log("Firebase Analytics not supported or not in browser environment."); // Optional: for debugging
+    console.log("Firebase Analytics not supported or not running in a browser environment."); // Optional: for debugging
   }
 }
 
-// Call the async function to execute the Analytics initialization logic
-// This ensures the promise from isSupported() is properly handled.
+// Call the async function to execute the Analytics initialization logic.
+// This call will run asynchronously in the background.
 initializeFirebaseAnalytics();
 
+// Export 'app' and 'analytics'. Note: 'analytics' might be undefined
+// until initializeFirebaseAnalytics() has completed its async operations.
 export { app, analytics };
