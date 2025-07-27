@@ -1,4 +1,4 @@
-// lib/firebase.ts (CORRECTED VERSION)
+/// lib/firebase.ts (ABSOLUTELY THE CORRECTED VERSION - PLEASE USE THIS)
 
 import { initializeApp, getApps, getApp } from "firebase/app";
 import { getAnalytics, isSupported } from "firebase/analytics";
@@ -20,7 +20,9 @@ const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 let analytics;
 
 // Define an async function to initialize Analytics conditionally
+// This function needs to be async to use 'await'
 async function initializeFirebaseAnalytics() {
+  // IMPORTANT: AWAIT THE isSupported() PROMISE HERE
   if (typeof window !== 'undefined' && (await isSupported())) {
     analytics = getAnalytics(app);
     // console.log("Firebase Analytics initialized!"); // Optional: for debugging
